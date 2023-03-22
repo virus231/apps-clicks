@@ -21,7 +21,7 @@
 
 ## Development
 
-To connect with Supabase, create a `.env.local` file in the project root directory and configure the Supabase URL and anon key:
+To connect with ChatGPT, create a `.env.example` file in the project root directory and configure the anon key:
 
 ```
 NEXT_PUBLIC_CHATGPT_KEY=<your_anon_key>
