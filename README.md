@@ -1,6 +1,6 @@
 # Test Task for AppsClicks company
 
-# Story - Auto-generated and posted article from ChatGPT to Vercel using NextJS framework
+## Story - Auto-generated and posted article from ChatGPT to Vercel using NextJS framework
 
 ### Application featuring:
 
