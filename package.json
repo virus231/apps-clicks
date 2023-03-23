@@ -10,7 +10,11 @@
     "start": "next start"
   },
   "dependencies": {
-    "@prisma/client": "^4.9.0",
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.14",
+    "@mui/system": "^5.11.14",
+    "@prisma/client": "^4.11.0",
     "cheerio": "1.0.0-rc.12",
     "next": "^13.2.1",
     "node-fetch": "^3.3.1",
