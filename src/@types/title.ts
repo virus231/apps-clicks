@@ -1,7 +1,7 @@
 import { type Article } from "@prisma/client";
 
 export interface ITitle {
-  titles: Article[];
+  response: Article[];
   success: boolean;
 }
 

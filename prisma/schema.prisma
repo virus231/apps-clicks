@@ -14,6 +14,6 @@ model Example {
 }
 
 model Article {
-    id    String  @id @default(cuid())
-    title String  @unique
+    id              String  @id @default(cuid())
+    originalTitle   String  @unique
 }

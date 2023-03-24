@@ -1,8 +1,15 @@
 import { prisma } from "@/server/db";
 import * as cheerio from "cheerio";
 import type { NextApiRequest, NextApiResponse } from "next";
+import {Configuration, CreateChatCompletionResponse, OpenAIApi} from "openai";
+import { AxiosResponse } from "axios";
+
 
 const BASE_SITE_SCRAP = "https://www.gamespot.com/";
+
+const ai = new OpenAIApi(new Configuration({
+  apiKey: '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'
+}))
 
 
 export default async function handler(
@@ -10,6 +17,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
+    let regenerateTitles: string[] | undefined;
+
     const response = await fetch(BASE_SITE_SCRAP);
 
     const getTitles = (html: string) => {
@@ -25,21 +34,36 @@ export default async function handler(
 
     for (const title of titles) {
       const existingArticle = await prisma.article.findUnique({
-        where: { title },
+        where: { originalTitle: title },
       });
 
       if (existingArticle) {
-        console.log(`Article with title "${title}" already exists`);
+        new Error(`Article with title "${title}" already exists`)
       } else {
-        await prisma.article.create({ data: { title } });
+        console.log("title", title);
+        await prisma.article.create({ data: { originalTitle: title } });
       }
 
     }
 
     const data = await prisma.article.findMany();
 
+    if(data) {
+      const prompt = `Regenerate the following h1 titles:\n${titles.join("\n")}\nNew Titles:`;
 
-    res.status(200).json({ titles: data, success: true });
+      const responseFromAI = await ai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages: [{
+          role: "user",
+          content: prompt
+        }]
+      });
+      regenerateTitles = responseFromAI.data.choices[0]?.message?.content.trim().split("\n");
+
+    }
+
+
+    res.status(200).json({ originalTitles: data, regenerateTitles: regenerateTitles, success: true });
   } catch (err) {
     res.status(500).json({ success: false, error: "failed to load data" });
   }
