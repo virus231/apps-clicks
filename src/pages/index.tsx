@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useState } from "react";
 
-import { type ITitle } from "@/@types/title";
 import Head from "next/head";
 import { type Article } from "@prisma/client";
 import Paper from '@mui/material/Paper';
@@ -19,25 +18,22 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Home = () => {
-  const [list, setListing] = useState<string[]>([]);
+  const [data, setData] = useState<Article[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   const fetchTitles = async () => {
     try {
       setLoading(true);
       const response = await fetch("http://localhost:3000/api/titles");
-      const data = await response.json() as Article;
+      const { data } = await response.json();
 
-      console.log("data", data);
-
-      setListing(data.originalTitle as unknown as string[])
+      setData(data as Article[])
 
       setLoading(false);
     } catch (error) {
       throw new Error("Something went wrong");
     }
   };
-
 
   return (
     <>
@@ -60,9 +56,9 @@ const Home = () => {
               </Link>
             </Typography>
             {!loading ? (
-              list.map((title, index) => (
-                <h1 key={index} className="text-black">
-                  {index + 1}. {title}
+              data.map((title, index) => (
+                <h1 key={title.id} className="text-black">
+                  {index + 1}. {title.originalTitle}
                 </h1>
               ))
             ) : <Loading/>}
@@ -72,7 +68,13 @@ const Home = () => {
             <Typography variant="h5">
               Regenerate titles - ChatGPT
             </Typography>
-
+            {!loading ? (
+              data.map((title) => (
+                <h1 key={title.id} className="text-black">
+                  {title.regenerateTitle}
+                </h1>
+              ))
+            ) : <Loading/>}
           </Item>
           <Item>Item 3</Item>
         </Stack>
@@ -81,7 +83,7 @@ const Home = () => {
             onClick={() => fetchTitles()}
             className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
             type="button"
-            disabled={list.length > 0}
+            disabled={data.length > 0}
           >
             Get Titles
           </button>
