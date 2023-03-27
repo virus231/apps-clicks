@@ -17,6 +17,7 @@ const ArticlePage = () => {
   const fetchArticle = async () => {
     setLoading(true)
     const res = await fetch(`/api/article/${id}`);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const { data } = await res.json();
 
     setArticle(data as Omit<Article, "originalTitle">);
@@ -26,9 +27,8 @@ const ArticlePage = () => {
 
   useEffect(() => {
     void fetchArticle();
-  }, [fetchArticle])
+  }, [])
 
-  console.log(article);
 
   return <>
     <Head>

@@ -25,6 +25,7 @@ const Home = () => {
     try {
       setLoading(true);
       const response = await fetch("/api/original-titles");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { data } = await response.json();
 
       setOriginalTitles(data as Pick<Article, "originalTitle" | "id">[]);
