@@ -1,13 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "@/server/db";
-import Replicate from "replicate";
+// import Replicate from "replicate";
 import { ai } from "@/pages/api/original-titles";
 
 
-const replicate = new Replicate({
-  userAgent: "",
-  auth: "r8_Vy0yQP33PNFgcnSE5lSf4A0CyuTWfLA3BTjNw"
-});
+// const replicate = new Replicate({
+//   userAgent: "",
+//   auth: "r8_Vy0yQP33PNFgcnSE5lSf4A0CyuTWfLA3BTjNw"
+// });
 
 const generateArticle = async (title: string) => {
   const prompt = `Write an article on "${title}" with 1000 words.\n`;
@@ -45,19 +45,19 @@ const generateDescriptino = async (article: string) => {
   return data.choices[0]?.message?.content.trim();
 }
 
-const getImageArticle = async (title: string) => {
-  console.log("title", title);
-  const output = await replicate.run(
-    "prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb",
-    {
-      input: {
-        prompt: `mdjrny-v4 ${title} 4k`
-      }
-    }
-  );
-  console.log(output);
-  return String(output);
-}
+// const getImageArticle = async (title: string) => {
+//   console.log("title", title);
+//   const output = await replicate.run(
+//     "prompthero/openjourney:9936c2001faa2194a261c01381f90e65261879985476014a0a37a334593a05eb",
+//     {
+//       input: {
+//         prompt: `mdjrny-v4 ${title} 4k`
+//       }
+//     }
+//   );
+//   console.log(output);
+//   return String(output);
+// }
 
 
 export default async function handler(req: NextApiRequest,

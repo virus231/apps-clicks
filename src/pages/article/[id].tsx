@@ -25,8 +25,8 @@ const ArticlePage = () => {
   }
 
   useEffect(() => {
-    fetchArticle();
-  }, [])
+    void fetchArticle();
+  }, [fetchArticle])
 
   console.log(article);
 

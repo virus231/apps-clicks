@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import Head from "next/head";
 import { type Article } from "@prisma/client";
 import Paper from '@mui/material/Paper';
@@ -8,12 +7,7 @@ import { styled, Stack } from '@mui/system';
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import { Loading } from "@/components/Loading";
-import { MainAccordion } from "@/components/MainAccordion";
 
-
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -45,6 +39,7 @@ const Home = () => {
     try {
       setLoading(true)
       const response = await fetch("/api/regenerate-titles");
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { data } = await response.json();
 
       setRegenerateTitles(data as Pick<Article, "regenerateTitle" | "id">[]);
@@ -56,8 +51,8 @@ const Home = () => {
   }
 
   useEffect(() => {
-    fetchOriginalTitles();
-    fetchRegenerateTitles();
+    void fetchOriginalTitles();
+    void fetchRegenerateTitles();
   }, [])
 
 
