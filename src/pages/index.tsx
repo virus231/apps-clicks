@@ -106,7 +106,6 @@ const Home = () => {
             onClick={fetchOriginalTitles}
             className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
             type="button"
-            disabled={originalTitles.length > 0}
           >
             Get Original Titles
           </button>
@@ -114,7 +113,6 @@ const Home = () => {
             onClick={fetchRegenerateTitles}
             className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
             type="button"
-            disabled={originalTitles.length < 0 && regenerateTitles.length > 0}
           >
             Get Regenerate Titles
           </button>
