@@ -1,3 +1,4 @@
+import { env } from "@/env.mjs";
 import { prisma } from "@/server/db";
 import * as cheerio from "cheerio";
 import type { NextApiRequest, NextApiResponse } from "next";
@@ -7,7 +8,7 @@ import {Configuration, OpenAIApi} from "openai";
 export const BASE_SITE_SCRAP = "https://www.gamespot.com/";
 
 export const ai = new OpenAIApi(new Configuration({
-  apiKey: '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'
+  apiKey: String(env.CHATGPT_API_KEY)
 }))
 
 export const getOriginalTitles = (html: string) => {
