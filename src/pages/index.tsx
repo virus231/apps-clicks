@@ -27,7 +27,6 @@ const Home = () => {
   const [regenerateTitles, setRegenerateTitles] = useState<Pick<Article, "regenerateTitle" | "id">[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-
   const fetchOriginalTitles = async () => {
     try {
       setLoading(true);
@@ -97,8 +96,8 @@ const Home = () => {
             </Typography>
             {!loading || regenerateTitles.length > 0 ? (
               regenerateTitles.map((title) => (
-                <Typography variant="body2">
-                  <Link key={title.id} className="text-black" href={`/article/${title.id}`}>
+                <Typography key={title.id} variant="body1" className="hover:divide-cyan-900">
+                  <Link key={title.id} className="text-black " href={`/article/${title.id}`}>
                     {title.regenerateTitle}
                   </Link>
                 </Typography>

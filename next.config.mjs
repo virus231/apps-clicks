@@ -6,6 +6,9 @@
 
 /** @type {import("next").NextConfig} */
 const config = {
+  images: {
+    domains: ['replicate.delivery']
+  },
   reactStrictMode: true,
 
   /**

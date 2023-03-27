@@ -7,7 +7,7 @@ import {Configuration, OpenAIApi} from "openai";
 export const BASE_SITE_SCRAP = "https://www.gamespot.com/";
 
 export const ai = new OpenAIApi(new Configuration({
-  apiKey: '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'
+  apiKey: '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'
 }))
 
 export const getOriginalTitles = (html: string) => {
@@ -27,15 +27,22 @@ export default async function handler(
   try {
     const response = await fetch(BASE_SITE_SCRAP);
 
-    const titles = getOriginalTitles(await response.text());
+    const { originalTitle } = await prisma.article.count({
+      select: {
+        originalTitle: true
+      }
+    })
 
-    for (const title of titles) {
-      await prisma.article.upsert({
-        where: { originalTitle: title },
-        update: { originalTitle: title },
-        create: { originalTitle: title },
-      });
+    if (originalTitle === 0) {
+      const titles = getOriginalTitles(await response.text());
 
+      for (const title of titles) {
+        await prisma.article.upsert({
+          where: { originalTitle: title },
+          update: { originalTitle: title },
+          create: { originalTitle: title },
+        });
+      }
     }
 
     const data = await prisma.article.findMany({

@@ -20,4 +20,5 @@ model Article {
   description     String?
   metaTags        String?
   metaDescription String?
+  image           String?
 }

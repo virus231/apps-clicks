@@ -1,9 +1,10 @@
-import { ai, BASE_SITE_SCRAP, getOriginalTitles } from "@/pages/api/original-titles";
+import { ai } from "@/pages/api/original-titles";
 import { type NextApiRequest, type NextApiResponse } from "next";
 import { prisma } from "@/server/db";
 
 
-const getRegenerateTitles = async (titles: string[]) => {
+
+const getRegenerateTitles = async (titles: {originalTitle: string}[]) => {
   const prompt = `Regenerate the following h1 titles:\n${titles.join("\n")}\nNew Titles:`;
   const { data } = await ai.createChatCompletion({
     model: "gpt-3.5-turbo",
@@ -17,28 +18,39 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    // const response = await fetch(BASE_SITE_SCRAP);
-
-    // const titles = getOriginalTitles(await response.text());
-
-    // const listOfRegenerateTitles = await getRegenerateTitles(titles) as string[];
-    //
-    // for (const [index, title] of titles.entries()) {
-    //   await prisma.article.upsert({
-    //     where: { originalTitle: title || "" },
-    //     update: { regenerateTitle: listOfRegenerateTitles[index] },
-    //     create: { regenerateTitle: listOfRegenerateTitles[index] },
-    //   });
-    // }
-
-    const regenerateTitles = await prisma.article.findMany({
+    const titles = await prisma.article.findMany({
       select: {
-        id: true,
+        originalTitle: true
+      }
+    })
+
+    const { regenerateTitle } = await prisma.article.count({
+      select: {
         regenerateTitle: true
       }
     })
 
-    res.status(200).json({ data: regenerateTitles, success: true });
+    if (regenerateTitle === 0) {
+      const listOfRegenerateTitles = await getRegenerateTitles(titles as {originalTitle: string}[]) as string[];
+
+      for (const title of listOfRegenerateTitles) {
+        await prisma.article.upsert({
+          where: { regenerateTitle: title },
+          update: { regenerateTitle: title },
+          create: { regenerateTitle: title  },
+        });
+      }
+    }
+
+
+    const data = await prisma.article.findMany({
+      select: {
+        id: true,
+        regenerateTitle: true
+      }
+    });
+
+    res.status(200).json({ data, success: true });
   } catch (e) {
     res.status(500).json({ success: false, error: "Something went wrong." });
   }
