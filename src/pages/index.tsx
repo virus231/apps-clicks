@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import React, { useState } from "react";
 
 import Head from "next/head";
@@ -6,9 +5,16 @@ import { type Article } from "@prisma/client";
 import Paper from '@mui/material/Paper';
 import Divider from '@mui/material/Divider';
 import { styled, Stack } from '@mui/system';
-import { Box, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from "@mui/material";
 import Link from "next/link";
 import { Loading } from "@/components/Loading";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { MainAccordion } from "@/components/MainAccordion";
+
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -18,22 +24,55 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 const Home = () => {
-  const [data, setData] = useState<Article[]>([]);
+  const [originalTitles, setOriginalTitles] = useState<Pick<Article, "originalTitle" | "id">[]>([]);
+  const [regenerateTitles, setRegenerateTitles] = useState<Pick<Article, "regenerateTitle" | "id">[]>([]);
+  const [articles, setArticles] = useState<Pick<Article, "regenerateTitle" | "description" | "id">[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const fetchTitles = async () => {
+
+  const fetchOriginalTitles = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/api/titles");
+      const response = await fetch("/api/original-titles");
       const { data } = await response.json();
 
-      setData(data as Article[])
+      setOriginalTitles(data as Pick<Article, "originalTitle" | "id">[]);
 
       setLoading(false);
     } catch (error) {
       throw new Error("Something went wrong");
     }
   };
+
+  const fetchRegenerateTitles = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch("/api/regenerate-titles");
+      const { data } = await response.json();
+
+      setRegenerateTitles(data as Pick<Article, "regenerateTitle" | "id">[]);
+
+      setLoading(false);
+    } catch (e) {
+      throw new Error("Something went wrong");
+    }
+  }
+
+  const fetchArticles = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch("/api/articles");
+      const { data } = await response.json();
+
+      setArticles(data as Pick<Article, "regenerateTitle" | "description" | "id">[]);
+
+      setLoading(false);
+    } catch (e) {
+      throw new Error("Something went wrong");
+    }
+  }
+
+
 
   return (
     <>
@@ -55,8 +94,8 @@ const Home = () => {
                 https://www.gamespot.com/
               </Link>
             </Typography>
-            {!loading ? (
-              data.map((title, index) => (
+            {!loading || originalTitles.length > 0 ? (
+              originalTitles.map((title, index) => (
                 <h1 key={title.id} className="text-black">
                   {index + 1}. {title.originalTitle}
                 </h1>
@@ -68,26 +107,51 @@ const Home = () => {
             <Typography variant="h5">
               Regenerate titles - ChatGPT
             </Typography>
-            {!loading ? (
-              data.map((title) => (
+            {!loading || regenerateTitles.length > 0 ? (
+              regenerateTitles.map((title) => (
                 <h1 key={title.id} className="text-black">
                   {title.regenerateTitle}
                 </h1>
               ))
             ) : <Loading/>}
           </Item>
-          <Item>Item 3</Item>
+          <Item>
+            <Typography variant="h5">
+              Articles from ChatGPT
+            </Typography>
+            {
+              articles.length > 0 && !loading
+                ? articles.map((article) => <MainAccordion key={article.id} article={article} /> )
+                : <Loading/>
+            }
+
+          </Item>
         </Stack>
-        <Box className="mt-5">
+        <Stack direction="row" spacing={2} className="mt-5" >
           <button
-            onClick={() => fetchTitles()}
+            onClick={fetchOriginalTitles}
             className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
             type="button"
-            disabled={data.length > 0}
+            disabled={originalTitles.length > 0}
           >
-            Get Titles
+            Get Original Titles
           </button>
-        </Box>
+          <button
+            onClick={fetchRegenerateTitles}
+            className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
+            type="button"
+            disabled={originalTitles.length < 0 && regenerateTitles.length > 0}
+          >
+            Get Regenerate Titles
+          </button>
+          <button
+            onClick={fetchArticles}
+            className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
+            type="button"
+          >
+            Get Articles
+          </button>
+        </Stack>
 
 
       </main>

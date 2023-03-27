@@ -1,20 +1,21 @@
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Article {
-    id                String  @id @default(cuid())
-    originalTitle     String  @unique
-    regenerateTitle   String  @unique
+  id              String  @id @default(cuid())
+  originalTitle   String? @unique
+  regenerateTitle String? @unique
+  description     String?
 }
