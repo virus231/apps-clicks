@@ -77,13 +77,13 @@ const Home = () => {
                 https://www.gamespot.com/
               </Link>
             </Typography>
-            {!loading || originalTitles.length > 0 ? (
-              originalTitles.map((title, index) => (
-                <h1 key={title.id} className="text-black">
-                  {index + 1}. {title.originalTitle}
-                </h1>
-              ))
-            ) : <Loading/>}
+            {/*{!loading || originalTitles.length > 0 ? (*/}
+            {/*  originalTitles.map((title, index) => (*/}
+            {/*    <h1 key={title.id} className="text-black">*/}
+            {/*      {index + 1}. {title.originalTitle}*/}
+            {/*    </h1>*/}
+            {/*  ))*/}
+            {/*) : <Loading/>}*/}
 
           </Item>
           <Item>
