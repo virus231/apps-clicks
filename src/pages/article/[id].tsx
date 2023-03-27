@@ -14,6 +14,7 @@ const ArticlePage = () => {
   const router = useRouter();
   const id = String(router.query.id);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetchArticle = async () => {
     setLoading(true)
     const res = await fetch(`/api/article/${id}`);
@@ -27,7 +28,7 @@ const ArticlePage = () => {
 
   useEffect(() => {
     void fetchArticle();
-  }, [])
+  }, [fetchArticle])
 
 
   return <>

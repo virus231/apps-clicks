@@ -103,14 +103,14 @@ const Home = () => {
         </Stack>
         <Stack direction="row" spacing={2} className="mt-5" >
           <button
-            onClick={fetchOriginalTitles}
+            onClick={void fetchOriginalTitles}
             className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
             type="button"
           >
             Get Original Titles
           </button>
           <button
-            onClick={fetchRegenerateTitles}
+            onClick={void fetchRegenerateTitles}
             className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
             type="button"
           >
