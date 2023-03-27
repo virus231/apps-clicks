@@ -1,5 +1,5 @@
 import { ai, BASE_SITE_SCRAP, getOriginalTitles } from "@/pages/api/original-titles";
-import { NextApiRequest, NextApiResponse } from "next";
+import { type NextApiRequest, type NextApiResponse } from "next";
 import { prisma } from "@/server/db";
 
 
@@ -17,19 +17,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    const response = await fetch(BASE_SITE_SCRAP);
+    // const response = await fetch(BASE_SITE_SCRAP);
 
-    const titles = getOriginalTitles(await response.text());
+    // const titles = getOriginalTitles(await response.text());
 
-    const listOfRegenerateTitles = await getRegenerateTitles(titles) as string[];
-
-    for (const [index, title] of titles.entries()) {
-      await prisma.article.upsert({
-        where: { originalTitle: title || "" },
-        update: { originalTitle: title || "", regenerateTitle: listOfRegenerateTitles[index] },
-        create: { regenerateTitle: listOfRegenerateTitles[index] },
-      });
-    }
+    // const listOfRegenerateTitles = await getRegenerateTitles(titles) as string[];
+    //
+    // for (const [index, title] of titles.entries()) {
+    //   await prisma.article.upsert({
+    //     where: { originalTitle: title || "" },
+    //     update: { regenerateTitle: listOfRegenerateTitles[index] },
+    //     create: { regenerateTitle: listOfRegenerateTitles[index] },
+    //   });
+    // }
 
     const regenerateTitles = await prisma.article.findMany({
       select: {

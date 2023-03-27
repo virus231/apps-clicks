@@ -15,6 +15,30 @@ const generateArticle = async (title: string) => {
   return data.choices[0]?.message?.content.trim();
 }
 
+const generateTags = async (article: string) => {
+  const prompt = `Generate meta tags for the following article:\n\n${article}`;
+
+  const {data} = await ai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.5,
+  });
+
+  return data.choices[0]?.message?.content.trim();
+}
+
+const generateDescriptino = async (article: string) => {
+  const prompt = `Generate meta description for the following article:\n\n${article}`;
+
+  const {data} = await ai.createChatCompletion({
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.5,
+  });
+
+  return data.choices[0]?.message?.content.trim();
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -28,13 +52,18 @@ export default async function handler(
 
     for (const title of regenerateTitles) {
       const article = await generateArticle(title.regenerateTitle || "");
+      const tags = await generateTags(article || "");
+      const description = await generateDescriptino(article || "");
+
       await prisma.article.upsert({
         where: {
           regenerateTitle: title.regenerateTitle || ""
         },
-        update: { description: article },
+        update: { description: article, metaTags: tags, metaDescription: description },
         create: {
-          description: article
+          description: article,
+          metaTags: tags,
+          metaDescription: description
         }
       })
     }
@@ -43,7 +72,9 @@ export default async function handler(
       select: {
         id: true,
         regenerateTitle: true,
-        description: true
+        description: true,
+        metaTags: true,
+        metaDescription: true
       }
     });
 

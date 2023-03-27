@@ -7,7 +7,7 @@ import {Configuration, OpenAIApi} from "openai";
 export const BASE_SITE_SCRAP = "https://www.gamespot.com/";
 
 export const ai = new OpenAIApi(new Configuration({
-  apiKey: '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'
+  apiKey: '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'
 }))
 
 export const getOriginalTitles = (html: string) => {

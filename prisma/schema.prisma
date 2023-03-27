@@ -18,4 +18,6 @@ model Article {
   originalTitle   String? @unique
   regenerateTitle String? @unique
   description     String?
+  metaTags        String?
+  metaDescription String?
 }
