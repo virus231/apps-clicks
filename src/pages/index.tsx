@@ -42,7 +42,6 @@ const Home = () => {
       const response = await fetch("/api/regenerate-titles");
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       const { data } = await response.json();
-      console.log("data", data);
 
       setRegenerateTitles(data as Pick<Article, "regenerateTitle" | "id">[]);
 
@@ -91,32 +90,32 @@ const Home = () => {
             <Typography variant="h5">
               Regenerate titles - ChatGPT
             </Typography>
-            {/*{!loading || regenerateTitles.length > 0 ? (*/}
-            {/*  regenerateTitles.map((title) => (*/}
-            {/*    <Typography key={title.id} variant="body1" className="hover:divide-cyan-900">*/}
-            {/*      <Link key={title.id} className="text-black " href={`/article/${title.id}`}>*/}
-            {/*        {title.regenerateTitle}*/}
-            {/*      </Link>*/}
-            {/*    </Typography>*/}
-            {/*  ))*/}
-            {/*) : <Loading/>}*/}
+            {!loading || regenerateTitles.length > 0 ? (
+              regenerateTitles.map((title) => (
+                <Typography key={title.id} variant="body1" className="hover:divide-cyan-900">
+                  <Link key={title.id} className="text-black " href={`/article/${title.id}`}>
+                    {title.regenerateTitle}
+                  </Link>
+                </Typography>
+              ))
+            ) : <Loading/>}
           </Item>
         </Stack>
         <Stack direction="row" spacing={2} className="mt-5" >
-          <button
-            onClick={void fetchOriginalTitles}
-            className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
-            type="button"
-          >
-            Get Original Titles
-          </button>
-          <button
-            onClick={void fetchRegenerateTitles}
-            className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"
-            type="button"
-          >
-            Get Regenerate Titles
-          </button>
+          {/*<button*/}
+          {/*  onClick={fetchOriginalTitles}*/}
+          {/*  className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"*/}
+          {/*  type="button"*/}
+          {/*>*/}
+          {/*  Get Original Titles*/}
+          {/*</button>*/}
+          {/*<button*/}
+          {/*  onClick={fetchRegenerateTitles}*/}
+          {/*  className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"*/}
+          {/*  type="button"*/}
+          {/*>*/}
+          {/*  Get Regenerate Titles*/}
+          {/*</button>*/}
           {/*<button*/}
           {/*  onClick={fetchArticles}*/}
           {/*  className="mb-2 h-10 rounded-full border border-slate-200 px-6 font-semibold text-slate-100"*/}

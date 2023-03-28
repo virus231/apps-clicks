@@ -8,7 +8,7 @@ import {Configuration, OpenAIApi} from "openai";
 export const BASE_SITE_SCRAP = "https://www.gamespot.com/";
 
 export const ai = new OpenAIApi(new Configuration({
-  apiKey: String(env.CHATGPT_API_KEY)
+  apiKey: "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"
 }))
 
 export const getOriginalTitles = (html: string) => {

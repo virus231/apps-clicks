@@ -14,10 +14,12 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
 
-## Status
+[//]: # (## Status)
 
-![Status](https://img.shields.io/github/deployments/kfirfitousi/pasta-quiz/production?label=vercel&logo=vercel&style=for-the-badge)
-![Website](https://img.shields.io/website?down_color=lightgrey&down_message=down&style=for-the-badge&up_color=limegreen&up_message=online&url=https%3A%2F%2Fpasta.kfirfitousi.com)
+[//]: # ()
+[//]: # (![Status]&#40;https://img.shields.io/github/deployments/kfirfitousi/pasta-quiz/production?label=vercel&logo=vercel&style=for-the-badge&#41;)
+
+[//]: # (![Website]&#40;https://img.shields.io/website?down_color=lightgrey&down_message=down&style=for-the-badge&up_color=limegreen&up_message=online&url=https%3A%2F%2Fpasta.kfirfitousi.com&#41;)
 
 ## Development
 
